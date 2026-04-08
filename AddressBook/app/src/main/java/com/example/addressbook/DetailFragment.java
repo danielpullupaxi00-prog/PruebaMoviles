@@ -1,10 +1,8 @@
 package com.example.addressbook;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +24,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private String deletedContactName;
-    private ContentValues deletedContactValues;
     private static final int CONTACT_LOADER = 0;
     private DetailFragmentListener listener;
     private Uri contactUri;
@@ -38,6 +34,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView cityTextView;
     private TextView stateTextView;
     private TextView zipTextView;
+
+    private ContentValues deletedContactValues;
+    private String deletedContactName;
 
     public interface DetailFragmentListener {
         void onContactDeleted();
@@ -89,7 +88,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_edit) {
-            listener.onEditContact(contactUri);
+            if (listener != null) listener.onEditContact(contactUri);
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             deleteContact();
@@ -111,19 +110,23 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         getActivity().getContentResolver().delete(contactUri, null, null);
 
-        if (listener != null) {
-            listener.onContactDeleted();
-        }
-
-        Snackbar.make(getActivity().findViewById(R.id.coordinatorLayout),
-                        "Contacto eliminado", Snackbar.LENGTH_LONG)
+        Snackbar.make(getView(), "Contacto eliminado", Snackbar.LENGTH_LONG)
                 .setAction("DESHACER", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
-                        getActivity().getContentResolver().insert(Contact.CONTENT_URI, deletedContactValues);
-                          if (listener != null) {
-                            listener.onContactDeleted();
+                        // Reinsertar el contacto
+                        if (getActivity() != null) {
+                            getActivity().getContentResolver().insert(Contact.CONTENT_URI, deletedContactValues);
+                            // Refrescar la lista (MainActivity se encarga)
+                            if (listener != null) listener.onContactDeleted();
+                        }
+                    }
+                })
+                .addCallback(new Snackbar.Callback() {
+                    @Override
+                    public void onDismissed(Snackbar transientBottomBar, int event) {
+                        if (event != Snackbar.Callback.DISMISS_EVENT_ACTION) {
+                            if (listener != null) listener.onContactDeleted();
                         }
                     }
                 })
@@ -133,7 +136,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return new CursorLoader(getActivity(), contactUri, null, null, null, null);
+        return new CursorLoader(requireActivity(), contactUri, null, null, null, null);
     }
 
     @SuppressLint("Range")
