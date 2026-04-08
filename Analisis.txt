@@ -1,0 +1,21 @@
+1. Describa paso a paso qué ocurre en su aplicación cuando el usuario
+guarda un contacto.(Debe mencionar clases o componentes utilizados)
+
+En la clase AddEditFragment existe el método SaveContact, el cual guarda en variables creadas lo que se ingresa en los editText, luego valida los datos ingresados mediante ifs los cuales llaman a métodos booleanos creados (isValidName, isValidEmail, isValidPhone, isValidZip), después guarda los valores de las variables asignadas antes en un Objeto de la clase ContentValues, y por ultimo con una variable booleana llamada addingNewContact, si se mantiene como true se procede, y muestra los mensajes de éxito, sino los mensajes de error
+
+
+
+2. Indique cómo se almacenan los datos del contacto en su aplicación.
+(Mencione los componentes utilizados)
+
+
+
+3. Explique cómo se realiza la navegación entre pantallas o fragments en su
+aplicación.
+
+
+
+
+
+4. Mencione un problema que podría ocurrir si una operación costosa se
+ejecuta en la interfaz (UI) y explique por qué.
