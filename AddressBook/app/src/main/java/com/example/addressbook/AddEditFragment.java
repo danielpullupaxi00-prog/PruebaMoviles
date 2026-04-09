@@ -47,6 +47,8 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     private FloatingActionButton saveContactFAB;
     private View coordinatorLayout;
 
+    private char[] numGua = new char[]{};
+
     public interface AddEditFragmentListener {
         void onAddEditCompleted(Uri contactUri);
     }
@@ -163,7 +165,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
 
         ContentValues values = new ContentValues();
         values.put(Contact.COLUMN_NAME, name);
-        values.put(Contact.COLUMN_PHONE, phone);
+        values.put(Contact.COLUMN_PHONE, numGua.toString() );
         values.put(Contact.COLUMN_EMAIL, email);
         values.put(Contact.COLUMN_STREET, streetEditText.getText().toString().trim());
         values.put(Contact.COLUMN_CITY, cityEditText.getText().toString().trim());
@@ -225,14 +227,30 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     }
 
     private boolean isValidPhone(String phone) {
+        char[] aux = phone.toCharArray();
+        char [] aux2 = new char[]{};
+        int siguiente = 0;
         if (phone == null || phone.trim().isEmpty()) {
             return false;
         } else {
+            for(int i= 0; i <= aux.length; i++){
+                if (aux[i] != 0 || aux[i] != 1 || aux[i] != 2 || aux[i] != 3 ||
+                        aux[i] != 4 || aux[i] != 5 || aux[i] != 6 || aux[i] != 7 ||
+                        aux[i] != 8 || aux[i] != 9) {
 
+                } else {
+                    aux2[siguiente] = (aux[i]);
+                    siguiente++;
+                }
+            }
+        }
+        if(aux2.length != 9){
+            return false;
 
+        } else {
+            numGua = aux2;
             return true;
         }
-
     }
 
     private boolean isValidZip(String zip) {
