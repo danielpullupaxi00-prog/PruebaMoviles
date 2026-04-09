@@ -153,7 +153,7 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
             return;
         }
         if (!isValidPhone(phone)) {
-            Snackbar.make(coordinatorLayout, "Teléfono debe tener 10 dígitos", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(coordinatorLayout, "Teléfono debe tener 10 numeros", Snackbar.LENGTH_LONG).show();
             return;
         }
         if (!isValidZip(zip)) {
@@ -227,8 +227,12 @@ public class AddEditFragment extends Fragment implements LoaderManager.LoaderCal
     private boolean isValidPhone(String phone) {
         if (phone == null || phone.trim().isEmpty()) {
             return false;
+        } else {
+
+
+            return true;
         }
-        return phone.matches("\\d{10}");
+
     }
 
     private boolean isValidZip(String zip) {

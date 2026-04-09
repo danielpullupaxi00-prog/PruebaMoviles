@@ -10,6 +10,8 @@ En la clase AddEditFragment existe el método SaveContact, el cual guarda en var
 
 
 
+
+
 3. Explique cómo se realiza la navegación entre pantallas o fragments en su
 aplicación.
 
@@ -19,3 +21,4 @@ aplicación.
 
 4. Mencione un problema que podría ocurrir si una operación costosa se
 ejecuta en la interfaz (UI) y explique por qué.
+
